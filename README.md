@@ -2,6 +2,8 @@
 
 pcheck.sh does the following:
 - updates VMware tools.
-- saves the legacy disk layout to /home/fhadmin/disks.txt
-- saves the legacy IP addresses to /home/fhadmin/ips.txt
+- saves disk information
+- saves IP information
+- saves port information
+- saves this info to /home/fhadmin/mig.txt
 - if this script is saved into /tmp andexecuted, will verify /tmp has EXEC
