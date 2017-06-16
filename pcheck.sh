@@ -15,4 +15,6 @@ ip addr >> $MFILE
 echo "PORT INFO" >>$MFILE
 nmap -P0 localhost >>$MFILE
 
+echo "/tmp NOEXEC check" >>$MFILE
+cat /proc/mounts |grep -i noexec >>$MFILE
 echo "END" >>$MFILE
