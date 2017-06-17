@@ -5,5 +5,5 @@ pcheck.sh does the following:
 - saves disk information
 - saves IP information
 - saves port information
-- checks for partitions with NOEXEC
-- saves this info to /home/fhadmin/mig.txt
+- checks for NOEXEC on /tmp
+- saves this info to /home/fhadmin/migrate.txt
