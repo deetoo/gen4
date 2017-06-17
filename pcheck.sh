@@ -8,16 +8,16 @@ echo "Updating VMware tools."
 
 echo "--- DISK INFO" >$MFILE
 df -kh >>$MFILE
-echo "--- DISK INFO ENDS" >>$MFILE
+echo --- DISK INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- IP INFO">>$MFILE
-ip addr >> $MFILE
-echo "--- IP INFO ENDS" >>$MFILE
+ip addr |grep "inet "|grep eth >> $MFILE
+echo --- IP INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- PORT INFO" >>$MFILE
 nmap -P0 localhost >>$MFILE
-echo "--- PORT INFO ENDS" >>$MFILE
+echo --- PORT INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- NOEXEC CHECK" >>$MFILE
-cat /proc/mounts |grep -i noexec >>$MFILE
-echo "--- NOEXEC check ENDS" >>$MFILE
+cat /proc/mounts |grep -i noexec |grep tmp>>$MFILE
+echo --- NOEXEC check ENDS$'\n\n' >>$MFILE
