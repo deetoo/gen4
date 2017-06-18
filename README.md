@@ -5,5 +5,6 @@ pcheck.sh does the following:
 - saves disk information
 - saves IP information
 - saves port information
+- checks for network connectivity
 - checks for NOEXEC on /tmp
 - saves this info to /home/fhadmin/migrate.txt
