@@ -3,8 +3,6 @@
 
 MFILE="/home/fhadmin/migrate.txt"
 
-echo "Updating VMware tools."
-/usr/bin/vmware-config-tools.pl -d
 
 echo "--- KERNEL INFO" >$MFILE
 uname -ra >>$MFILE
