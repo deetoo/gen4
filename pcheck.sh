@@ -1,6 +1,26 @@
 #!/bin/bash
 #
 
+mount /dev/sr0 /media
+
+if [ -f /media/VMwareTools-10.1.7-5541682.tar.gz ]
+	then
+		echo "VMware Tools is being copied to /root"
+		cp /media/VMware* /root
+		cd /root
+		echo "Extracting VMware Tools 10.1"
+		tar zxf VMwareTools-10.1.7-5541682.tar.gz
+		echo "Uninstalling legacy VMware Tools."
+		vmware-uninstall-tools.pl
+		echo "Installing VMware Tools 10.1"
+		cd vmware-tools-distrib
+		./vmware-install.pl
+
+	else
+		echo "VMware Tools not found in /media - exiting!"
+		exit 0
+	fi
+
 MFILE="/home/fhadmin/migrate.txt"
 
 
