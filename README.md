@@ -1,7 +1,8 @@
 # gen4 scripts
 
 pcheck.sh does the following:
-- updates VMware tools.
+- updates VMware tools to v10.1
+- fixes legacy software repos
 - saves disk information
 - saves IP information
 - saves port information
