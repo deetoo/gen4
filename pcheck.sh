@@ -73,7 +73,7 @@ find /boot -type f -iname 'initrd*' -print -exec bash -c "KERNEL=\$(echo {} | se
     vmware-config-tools.pl -d -k \"\$KERNEL\" && touch /boot/\$KERNEL.vmtools)" \;
 EOF
 			chmod 755 /etc/init.d/armor-vmware-tools
-			update-rc.d armor-vmware-tools
+			update-rc.d armor-vmware-tools defaults
 			service armor-vmware-tools
 		fi
 
