@@ -14,7 +14,7 @@ if [ -f /media/VMwareTools-10.1.7-5541682.tar.gz ]
 		vmware-uninstall-tools.pl
 		echo "Installing VMware Tools 10.1"
 		cd vmware-tools-distrib
-		./vmware-install.pl
+		./vmware-install.pl -d
 
 	else
 		echo "VMware Tools not found in /media - exiting!"
