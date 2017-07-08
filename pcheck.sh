@@ -21,6 +21,8 @@ if [ -f /media/VMwareTools-10.1.7-5541682.tar.gz ]
 		exit 0
 	fi
 
+	find /etc/{apt,yum,yum.repos.d} -type f -not -iname "*.bak*" -print -exec sed -i.bak.$RANDOM -e "s/[A-Za-z][A-Za-z][A-Za-z]01-pkg01\.firehost\.net/a.svc.armor.com/g" {} \;
+
 MFILE="/home/fhadmin/migrate.txt"
 
 
