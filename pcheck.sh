@@ -1,5 +1,17 @@
 #!/bin/bash
 #
+clear
+if [ -d /.armor/backup ]
+	then
+		echo "Pre-migration scripts executed.";
+		else
+		echo "Could not find /.armor/backup";
+		echo "Pre-migration script issues.";
+		echo "Exiting!";
+		exit 0
+	fi
+
+echo "Mounting VMware Tools ISO.."
 
 mount /dev/sr0 /media
 
