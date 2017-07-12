@@ -40,7 +40,9 @@ if [ -f /media/VMwareTools-10.1.7-5541682.tar.gz ]
 	if [ -f /etc/redhat-release ]
 		then
 			echo "This is a RHEL/CentOS box."
-			yum install yum-plugin-security
+			echo "Installing ca-certificates and yum-plugin-security.."
+			
+			yum install -y yum-plugin-security ca-certificates
 			cat > /etc/init.d/armor-vmware-tools << EOF
 #! /bin/sh
 ### BEGIN INIT INFO
