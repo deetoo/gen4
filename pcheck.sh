@@ -16,7 +16,7 @@ if [ -x /tmp ]
 		echo "/tmp is executable.";
 	else
 		echo "/tmp is NOEXEC!";
-		echo "failure is imminent..";
+		echo "Migration scripts will NOT execute unless this is fixed.";
 		echo "Exiting.";
 		exit 0
 	fi
@@ -111,6 +111,10 @@ EOF
 
 MFILE="/home/fhadmin/migrate.txt"
 
+# do something here to check / and /boot if its used to 
+# available disk space. VMware Tools needs space here.
+#
+# df -kh | awk '{ print $6 " " $5 }' |grep -E '/ |/boot'
 
 echo "--- KERNEL INFO" >$MFILE
 uname -ra >>$MFILE
