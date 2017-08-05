@@ -11,6 +11,17 @@ if [ -d /.armor/backup ]
 		exit 0
 	fi
 
+if [ -x /tmp ]
+	then
+		echo "/tmp is executable.";
+	else
+		echo "/tmp is NOEXEC!";
+		echo "failure is imminent..";
+		echo "Exiting.";
+		exit 0
+	fi
+
+
 echo "Mounting VMware Tools ISO.."
 
 mount /dev/sr0 /media
