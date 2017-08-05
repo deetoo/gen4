@@ -21,6 +21,9 @@ if [ -x /tmp ]
 		exit 0
 	fi
 
+echo "Press a key to continue..";
+read PAUSE
+
 
 echo "Mounting VMware Tools ISO.."
 
