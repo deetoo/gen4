@@ -8,4 +8,5 @@ pcheck.sh does the following:
 - saves port information
 - checks for network connectivity
 - checks for NOEXEC on /tmp
+- checks for pre-migration scripts execution
 - saves this info to /home/fhadmin/migrate.txt
