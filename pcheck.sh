@@ -1,15 +1,11 @@
 #!/bin/bash
 #
-clear
-if [ -d /.armor/backup ]
-	then
-		echo "Pre-migration scripts executed.";
-		else
-		echo "Could not find /.armor/backup";
-		echo "Pre-migration script issues.";
-		echo "Exiting!";
-		exit 0
-	fi
+
+# set these values to zero by default.
+TOOLS=0;
+PRE=0;
+
+# adding arguments
 
 if [ -x /tmp ]
 	then
@@ -25,29 +21,33 @@ echo "Press a key to continue..";
 read PAUSE
 
 
-echo "Mounting VMware Tools ISO.."
-
-mount /dev/sr0 /media
-
-if [ -f /media/VMwareTools-10.1.7-5541682.tar.gz ]
+if [ $TOOLS="0" ]
 	then
-		echo "VMware Tools is being copied to /root"
-		cp /media/VMware* /root
-		cd /root
-		echo "Extracting VMware Tools 10.1"
-		tar zxf VMwareTools-10.1.7-5541682.tar.gz
-		echo "Uninstalling legacy VMware Tools."
-		vmware-uninstall-tools.pl
-		echo "Installing VMware Tools 10.1"
-		cd vmware-tools-distrib
-		./vmware-install.pl -d
+		echo "Mounting VMware Tools ISO.."
 
-		umount /media
+			mount /dev/sr0 /media
 
+			if [ -f /media/VMwareTools-10.1.7-5541682.tar.gz ]
+				then
+					echo "VMware Tools is being copied to /root"
+					cp /media/VMware* /root
+					cd /root
+					echo "Extracting VMware Tools 10.1"
+					tar zxf VMwareTools-10.1.7-5541682.tar.gz
+					echo "Uninstalling legacy VMware Tools."
+					vmware-uninstall-tools.pl
+					echo "Installing VMware Tools 10.1"
+					cd vmware-tools-distrib
+					./vmware-install.pl -d
+
+			umount /media
+
+			else
+				echo "VMware Tools not found in /media - exiting!"
+			exit 0
+			fi
 	else
-		echo "VMware Tools not found in /media - exiting!"
-		exit 0
-	fi
+ fi
 #
 # check for Distro
 #
@@ -135,6 +135,6 @@ echo --- PORT INFO ENDS$'\n\n' >>$MFILE
 echo "--- OUTBOUND CONNECTIVITY" >>$MFILE
 ping -c3 -W5 google.com >>$MFILE
 echo --- OUTBOUND ENDS$'\n\n' >>$MFILE
-echo "--- NOEXEC CHECK" >>$MFILE
-cat /proc/mounts |grep -i noexec |grep tmp>>$MFILE
-echo --- NOEXEC check ENDS$'\n\n' >>$MFILE
+
+date >> $MFILE
+
