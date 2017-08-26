@@ -182,14 +182,16 @@ CheckOutbound ()
 		echo $'\n\n'Post-migration outbound connectivity:;
 		ping -c3 -W5 google.com |grep packet
 	}
-
+# check for generic processes that were running before migration,
+# then compare them to the generic processes after migration.
+# this is an INCOMPLETE list of processes and will continue to grow.
 CheckProcs ()
 	{
 		echo $'\n\n'Pre-migration generic processes:;
-		grep -E 'apache|httpd|sshd|exim|mysqld' $MFILE |awk '{ print $7 }' |cut -d/ -f2 |uniq 
+		grep -E 'apache|httpd|sshd|exim|mysqld|nginx|java' $MFILE |awk '{ print $7 }' |cut -d/ -f2 
 
 		echo $'\n\n'Post-migration generic processes:;
-		netstat -plant | grep -E 'apache|httpd|nginx|sshd|exim|mysqld' |awk '{print $7}' |cut -d/ -f2
+		netstat -plant | grep -E 'apache|httpd|nginx|sshd|exim|mysqld|java' |awk '{print $7}' |cut -d/ -f2
 	}
 # monster function that checks server status after migration.
 PostMigration ()
