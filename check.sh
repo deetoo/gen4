@@ -154,15 +154,65 @@ echo "Pre-Migration tasks completed!"
 exit 0;
 }
 
+# Post migration functions.
+
+# compare pre and post migration disk layout.
+CheckDisks ()
+	{
+		echo $'\n\n'Pre-migration disk layout:;
+		grep "/dev" $MFILE
+		echo $'\n\n'Post-migration disk layout:;
+		df -kh |grep "/dev"
+	}
+
+# compare pre and post network devices.
+CheckNICs ()
+	{
+		echo $'\n\n'Pre-migration network addresses:;
+		grep inet $MFILE
+		echo $'\n\n'Post-migration network addresses:;
+		ip addr |grep "inet "|grep eth
+	}
+
+CheckOutbound ()
+	{
+		echo $'\n\n'Pre-migration outbound connectivity:;
+		grep packet $MFILE
+	
+		echo $'\n\n'Post-migration outbound connectivity:;
+		ping -c3 -W5 google.com |grep packet
+	}
+
+CheckProcs ()
+	{
+		echo $'\n\n'Pre-migration generic processes:;
+		grep -E 'apache|httpd|sshd|exim|mysqld' $MFILE |awk '{ print $7 }' |cut -d/ -f2 |uniq 
+
+		echo $'\n\n'Post-migration generic processes:;
+		netstat -plant | grep -E 'apache|httpd|nginx|sshd|exim|mysqld' |awk '{print $7}' |cut -d/ -f2
+	}
 # monster function that checks server status after migration.
 PostMigration ()
 	{
+		clear
 		echo "Starting post-migration checks.";
+		echo "The pre-migration script was created on:" `tail -2 $MFILE`;
+		CheckDisks
+
+		CheckNICs
+
+		CheckOutbound
+
+		CheckProcs
+
+		echo $'\n\n'All checks completed.
+		
 		exit 0;
 	}
 
-
+# just a debug variable to allow test running script as a non-root user.
 TEST=0
+
 # verify root is executing the script.
 if [ $TEST == 1 ]
  then
@@ -173,6 +223,7 @@ if [ $UID -ne "0" ]
 	fi
 fi
 
+# show syntax if script is called without an argument.
 if [ $# -eq 0 ]
 	then
 		DoHelp

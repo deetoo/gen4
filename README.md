@@ -1,6 +1,6 @@
 # gen4 scripts
 
-pcheck.sh does the following:
+Using the --pre switch:
 - updates VMware tools to v10.1
 - fixes legacy software repos
 - saves disk information
@@ -10,3 +10,7 @@ pcheck.sh does the following:
 - checks for NOEXEC on /tmp
 - checks for pre-migration scripts execution
 - saves this info to /home/fhadmin/migrate.txt
+
+Using the --post switch:
+- uses the /home/fhadmin/migrate.txt file, compares all saved values with current values after migration.
+
