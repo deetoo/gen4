@@ -11,7 +11,7 @@
 #
 # 1.1a - 2 Sept 2017
 # - added checks to detect Bomgar, and Trend Deep Security processes.
-#
+# - added fnction to update old ntp servers to gen4 and re-synch time after migration.
 #
 
 
@@ -243,6 +243,29 @@ CheckProcs ()
 		echo $'\n\n'Post-migration generic processes:;
 		netstat -plant | grep -E 'apache|httpd|nginx|sshd|exim|mysqld|java' |awk '{print $7}' |cut -d/ -f2
 	}
+
+# update ntp servers. This has to be done in post-migration, 
+# as the new ntp servers are not accessible in gen3.
+# we replace the legacy servers, run ntpdate to update time,
+# and then restart the service.
+
+FixNTP ()
+	{
+	echo $'\n\n'Updating NTP servers:;
+	cp /etc/ntp.conf /tmp/ntp.conf.bak
+	#
+	# replace old with new gen4 ntp servers
+	sed -i 's/xxx.xxx.xxx.xxx/147.75.16.13/g' /etc/ntp.conf
+	sed -i 's/aaa.aaa.aaa.aaa/147.75.16.14/g' /etc/ntp.conf
+	# update server time using new ntp server
+	ntpdate -u 147.75.16.13
+	# restart ntpd service
+	service ntpd restart
+	echo $'\n\n'NTP servers updated, synched, service restarted:;
+	}
+
+
+
 # monster function that checks server status after migration.
 PostMigration ()
 	{
@@ -260,6 +283,8 @@ PostMigration ()
 		CheckBomgar
 
 		CheckTrend
+
+		FixNTP
 
 		echo $'\n\n'All checks completed.
 		
