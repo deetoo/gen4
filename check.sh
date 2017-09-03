@@ -255,8 +255,11 @@ FixNTP ()
 	cp /etc/ntp.conf /tmp/ntp.conf.bak
 	#
 	# replace old with new gen4 ntp servers
-	sed -i 's/xxx.xxx.xxx.xxx/147.75.16.13/g' /etc/ntp.conf
-	sed -i 's/aaa.aaa.aaa.aaa/147.75.16.14/g' /etc/ntp.conf
+	sed -i 's/DFW01-ts01.firehost.net/147.75.16.13/g' /etc/ntp.conf
+	sed -i 's/DFW01-ts02.firehost.net/147.75.16.14/g' /etc/ntp.conf
+
+	sed -i 's/PHX01-ts01.firehost.net/147.75.16.13/g' /etc/ntp.conf
+	sed -i 's/PHX01-ts01.firehost.net/147.75.16.14/g' /etc/ntp.conf
 	# update server time using new ntp server
 	ntpdate -u 147.75.16.13
 	# restart ntpd service
