@@ -194,7 +194,7 @@ exit 0;
 CheckBomgar ()
 	{
 		echo $'\n\n'Looking for Bomgar process:;
-		grep bomgar-pec
+		ps aux |grep bomgar-pec
 		echo $'\n\n'Check completed.;
 	}
 
@@ -202,7 +202,7 @@ CheckBomgar ()
 CheckTrend ()
 	{
 		echo $'\n\n'Looking for Trend processes:;
-		grep ds_agent
+		ps aux |grep ds_agent
 		echo $'\n\n'Check completed.;
 	}
 
