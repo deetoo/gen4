@@ -1,3 +1,5 @@
 # gen4 scripts
 
-this project is no longer being developed.
+Script now does pre-migration checks, and post-migration verification.
+
+- 1.1a added Bomgar and Trend post checks.
