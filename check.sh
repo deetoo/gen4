@@ -176,37 +176,31 @@ find /etc/{apt,yum,yum.repos.d} -type f -not -iname "*.bak*" -print -exec sed -i
 		# save lots of data.
 
 echo "-- VMWARE TOOLS VERSION" >$MFILE
-PRE_TOOLS=`vmware-toolbox-cmd -v`
-echo $PRE_TOOLS >>$MFILE 
+vmware-toolbox-cmd -v
 echo --- TOOLS VERSION ENDS$'\n\n' >>$MFILE
 
 echo "--- KERNEL INFO" >>$MFILE
-PRE_KERNEL=`uname -r`
+uname -r
 echo $PRE_KERNEL >>$MFILE
 echo  --- KERNEL INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- DISK INFO" >>$MFILE
-PRE_DISKS=`df -kh`
-echo $PRE_DISKS >>$MFILE
+df -kh
 echo --- DISK INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- IP INFO">>$MFILE
-PRE_IPS=`ip addr |grep "inet "|grep eth`
-echo $PRE_IPS >> $MFILE
+ip addr |grep "inet "|grep eth
 echo --- IP INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- PORT INFO" >>$MFILE
-PRE_NETSTAT=`netstat -plant`
-echo $PRE_NETSTAT >>$MFILE
+netstat -plant
 echo --- PORT INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- OUTBOUND CONNECTIVITY" >>$MFILE
-PRE_OUTBOUND=`ping -c3 -W5 google.com`
-echo PRE_OUTBOUND >>$MFILE
+ping -c3 -W5 google.com
 echo --- OUTBOUND ENDS$'\n\n' >>$MFILE
 
-PRE_DATE=`date`
-echo $PRE_DATE >> $MFILE
+echo `date` >> $MFILE
 
 echo "Pre-Migration tasks completed!"
 exit 0;
