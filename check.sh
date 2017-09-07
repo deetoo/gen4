@@ -13,12 +13,19 @@
 # - added checks to detect Bomgar, and Trend Deep Security processes.
 # - added fnction to update old ntp servers to gen4 and re-synch time after migration.
 #
+# 1.2a - 6 Sept 2017
+# - added more DEBUG options
+# added --report to generate before<>after report for internal ticket comment.
 
 
 
 # keep track of versions.
-VER="1.1a"
+VER="1.2a"
 
+# 0 = false, 1 = true 
+# if true, this will skip some steps.
+DEBUG=1
+ 
 # file to store all pre-migration values in.
 MFILE="/home/fhadmin/migrate.txt"
 
@@ -31,6 +38,7 @@ DoHelp ()
 		echo "Syntax Error!";
 		echo "$0 --pre  (this will execute all pre-migration checks.)";
 		echo "$0 --post (this will execute all post-migration checks.)";
+		echo "$0 --report (this will generate a before<>after report.)";
 		echo "$0 --ver (prints version of this script.)";
 		exit 0;
 	}
@@ -54,7 +62,11 @@ PreMigration ()
 		echo "Starting pre-migration checks.";
 
 		# check for legacy NTP servers.
-		DoNTP
+		# if DEBUG = 1 then skip this.
+	if [ $DEBUG == 0 ]
+		then
+			DoNTP
+		fi
 		# 	
 		# verify if /tmp is NOEXEC
 		#
@@ -163,27 +175,38 @@ find /etc/{apt,yum,yum.repos.d} -type f -not -iname "*.bak*" -print -exec sed -i
 
 		# save lots of data.
 
-echo "--- KERNEL INFO" >$MFILE
-uname -ra >>$MFILE
+echo "-- VMWARE TOOLS VERSION" >$MFILE
+PRE_TOOLS=`vmware-toolbox-cmd -v`
+echo $PRE_TOOLS >>$MFILE 
+echo --- TOOLS VERSION ENDS$'\n\n' >>$MFILE
+
+echo "--- KERNEL INFO" >>$MFILE
+PRE_KERNEL=`uname -r`
+echo $PRE_KERNEL >>$MFILE
 echo  --- KERNEL INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- DISK INFO" >>$MFILE
-df -kh >>$MFILE
+PRE_DISKS=`df -kh`
+echo $PRE_DISKS >>$MFILE
 echo --- DISK INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- IP INFO">>$MFILE
-ip addr |grep "inet "|grep eth >> $MFILE
+PRE_IPS=`ip addr |grep "inet "|grep eth`
+echo $PRE_IPS >> $MFILE
 echo --- IP INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- PORT INFO" >>$MFILE
-netstat -plant >>$MFILE
+PRE_NETSTAT=`netstat -plant`
+echo $PRE_NETSTAT >>$MFILE
 echo --- PORT INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- OUTBOUND CONNECTIVITY" >>$MFILE
-ping -c3 -W5 google.com >>$MFILE
+PRE_OUTBOUND=`ping -c3 -W5 google.com`
+echo PRE_OUTBOUND >>$MFILE
 echo --- OUTBOUND ENDS$'\n\n' >>$MFILE
 
-date >> $MFILE
+PRE_DATE=`date`
+echo $PRE_DATE >> $MFILE
 
 echo "Pre-Migration tasks completed!"
 exit 0;
@@ -294,11 +317,9 @@ PostMigration ()
 		exit 0;
 	}
 
-# just a debug variable to allow test running script as a non-root user.
-TEST=0
 
 # verify root is executing the script.
-if [ $TEST == 1 ]
+if [ $DEBUG == 0 ]
  then
 if [ $UID -ne "0" ]
 	then
