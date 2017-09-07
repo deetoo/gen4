@@ -176,28 +176,27 @@ find /etc/{apt,yum,yum.repos.d} -type f -not -iname "*.bak*" -print -exec sed -i
 		# save lots of data.
 
 echo "-- VMWARE TOOLS VERSION" >$MFILE
-vmware-toolbox-cmd -v
+vmware-toolbox-cmd -v >>$MFILE
 echo --- TOOLS VERSION ENDS$'\n\n' >>$MFILE
 
 echo "--- KERNEL INFO" >>$MFILE
-uname -r
-echo $PRE_KERNEL >>$MFILE
+uname -r >> $MFILE
 echo  --- KERNEL INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- DISK INFO" >>$MFILE
-df -kh
+df -kh >> $MFILE
 echo --- DISK INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- IP INFO">>$MFILE
-ip addr |grep "inet "|grep eth
+ip addr |grep "inet "|grep eth >> $MFILE
 echo --- IP INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- PORT INFO" >>$MFILE
-netstat -plant
+netstat -plant >> $MFILE
 echo --- PORT INFO ENDS$'\n\n' >>$MFILE
 
 echo "--- OUTBOUND CONNECTIVITY" >>$MFILE
-ping -c3 -W5 google.com
+ping -c3 -W5 google.com >>$MFILE
 echo --- OUTBOUND ENDS$'\n\n' >>$MFILE
 
 echo `date` >> $MFILE
@@ -215,6 +214,22 @@ CheckBomgar ()
 		echo $'\n\n'Check completed.;
 	}
 
+#check for pre and post migration kernel versions.
+CheckKernel ()
+	{
+		echo $'\n\n'Pre-migration kernel:;
+		grep x86_64 $MFILE	
+		echo $'\n\n'Post-migration kernel:;
+		uname -r
+	}
+# check for pre and post migration vmware tools versions.
+CheckTools ()
+	{
+		echo $'\n\n'Pre-migration VMware tools:;
+		grep build $MFILE
+		echo $'\n\n'Post-migration VMware Tools:;
+		vmware-toolbox-cmd
+	}
 # check for Trend Deep security.
 CheckTrend ()
 	{
@@ -292,6 +307,12 @@ PostMigration ()
 		clear
 		echo "Starting post-migration checks.";
 		echo "The pre-migration script was created on:" `tail -2 $MFILE`;
+		echo "The post-migration report was generated on:" `date`
+
+		CheckKernel
+
+		CheckTools
+
 		CheckDisks
 
 		CheckNICs
