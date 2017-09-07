@@ -261,10 +261,10 @@ CheckOutbound ()
 CheckProcs ()
 	{
 		echo $'\n\n'Pre-migration generic processes:;
-		grep -E 'apache|httpd|sshd|exim|mysqld|nginx|java' $MFILE |awk '{ print $7 }' |cut -d/ -f2 
+		grep -E 'apache|httpd|sshd|exim|mysqld|nginx|java' $MFILE |awk '{ print $7 }' |cut -d/ -f2 |sort -u 
 
 		echo $'\n\n'Post-migration generic processes:;
-		netstat -plant | grep -E 'apache|httpd|nginx|sshd|exim|mysqld|java' |awk '{print $7}' |cut -d/ -f2
+		netstat -plant | grep -E 'apache|httpd|nginx|sshd|exim|mysqld|java' |awk '{print $7}' |cut -d/ -f2 |sort -u
 	}
 
 # update ntp servers. This has to be done in post-migration, 
