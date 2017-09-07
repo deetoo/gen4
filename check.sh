@@ -306,7 +306,7 @@ PostMigration ()
 	{
 		clear
 		echo "---Post-Migration Report---";
-		echo "Server: `hostname`
+		echo "Server: " `hostname`
 		echo "The pre-migration script was created on:" `tail -2 $MFILE`;
 		echo "The post-migration report was generated on:" `date`
 
