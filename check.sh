@@ -104,6 +104,8 @@ fi
 					apt-get remove -y open-vm-tools
 					fi
 					# end check
+					# if open-vm-tools were installe,d the default would be NOT to
+					# install on the line below. This caused issues.
 					./vmware-install.pl -d
 
 			umount /media
@@ -334,7 +336,7 @@ PostMigration ()
 
 		FixNTP
 
-		echo $'\n\n'All checks completed.
+		echo "--- END REPORT ---"; 
 		
 		exit 0;
 	}
