@@ -98,6 +98,12 @@ fi
 					vmware-uninstall-tools.pl
 					echo "Installing VMware Tools 10.1"
 					cd vmware-tools-distrib
+					#
+					# add check here for Ubuntu, if found open-vm-tools package, remove it.
+					if [ -f /etc/debian_version ]
+					apt-get remove -y open-vm-tools
+					fi
+					# end check
 					./vmware-install.pl -d
 
 			umount /media
