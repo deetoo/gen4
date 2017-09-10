@@ -236,7 +236,7 @@ CheckTools ()
 		echo $'\n\n'Pre-migration VMware tools:;
 		grep build $MFILE
 		echo $'\n\n'Post-migration VMware Tools:;
-		vmware-toolbox-cmd
+		vmware-toolbox-cmd -v
 	}
 # check for Trend Deep security.
 CheckTrend ()
