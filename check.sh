@@ -16,11 +16,14 @@
 # 1.2a - 6 Sept 2017
 # - added more DEBUG options
 # added --report to generate before<>after report for internal ticket comment.
-
+#
+# 1.3a - 9 Sept 2017
+# - added vmware tools pre/post migration version checking.
+# - added --ver switch to check script version.
 
 
 # keep track of versions.
-VER="1.2a"
+VER="1.3a"
 
 # 0 = false, 1 = true 
 # if true, this will skip some steps.
@@ -38,7 +41,6 @@ DoHelp ()
 		echo "Syntax Error!";
 		echo "$0 --pre  (this will execute all pre-migration checks.)";
 		echo "$0 --post (this will execute all post-migration checks.)";
-		echo "$0 --report (this will generate a before<>after report.)";
 		echo "$0 --ver (prints version of this script.)";
 		exit 0;
 	}
