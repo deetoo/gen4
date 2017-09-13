@@ -45,15 +45,6 @@ DoHelp ()
 		exit 0;
 	}
 
-DoNTP ()
-	{
-		echo "Checking ntp configuration file.";
-		grep ^server /etc/ntp.conf
-
-		echo "If these values are not set to: 147.75.16.13 and 147.75.16.14";
-		echo "And this server relies on NTP, synchronization will fail without a fw rule.";
-		echo "If the servers are set to legacy armor/firehost rules this will fail as well.";
-	}
 
 
 # monster function that runs all pre-migration checks.
@@ -63,12 +54,6 @@ PreMigration ()
 		clear
 		echo "Starting pre-migration checks.";
 
-		# check for legacy NTP servers.
-		# if DEBUG = 1 then skip this.
-	if [ $DEBUG == 0 ]
-		then
-			DoNTP
-		fi
 		# 	
 		# verify if /tmp is NOEXEC
 		#
