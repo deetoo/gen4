@@ -24,9 +24,13 @@
 # 1.3b - 14 Sept 2017
 # - removed CheckNTP, because we update the ntp servers in --post
 # fixed broken if statement for removing open-vm-tools on Ubuntu
-
+#
+# 1.4a - 14 Sept 2017
+# added DoUpdate checks running script version vs latest available in repo.
+# option to directly download the latest script from the repo using --ver
+#
 # keep track of versions.
-VER="1.3b"
+VER="1.4a"
 
 # 0 = false, 1 = true 
 # if true, this will skip some steps.
@@ -210,6 +214,35 @@ echo "Pre-Migration tasks completed!"
 exit 0;
 }
 
+# CheckVersion - compares running version with the latest version in the GitHub repo.
+#
+CheckVersion ()
+	{
+	LATEST=`curl -s https://github.com/deetoo/gen4 |grep "Latest Version" -A2  |grep "<li>" |cut -d">" -f2 |awk '{print $1}'`
+	if [ $VER != $LATEST ];
+		 then
+			echo You are running version $VER, $LATEST is available.$'\n';
+			DoUpdate
+			exit 0;
+		else
+			echo "You are running the latest version of this script: $LATEST";
+			exit 0;
+		fi
+	}
+
+DoUpdate ()
+	{
+		echo -n "Would you like to download the latest version of this script? [y/n]: ";	
+		read DOWNLOAD
+	
+		if [ ${DOWNLOAD,,} == "y" ];
+			then
+				echo $'\n\n'Downloading..;
+				wget https://raw.githubusercontent.com/deetoo/gen4/master/check.sh -O check.sh
+		fi	
+		exit 0;
+	}
+
 # Post migration functions.
 # check if bomgar is running.
 CheckBomgar ()
@@ -367,7 +400,7 @@ while test $# -gt 0
 			--post) echo "post-migration run";
 			PostMigration
 			;;
-			--ver) echo "You are running version $VER";
+			--ver) CheckVersion; 
 			;;
 			*) DoHelp
 			;;
