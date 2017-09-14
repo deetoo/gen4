@@ -20,14 +20,22 @@
 # 1.3a - 9 Sept 2017
 # - added vmware tools pre/post migration version checking.
 # - added --ver switch to check script version.
-
+#
+# 1.3b - 14 Sept 2017
+# - removed CheckNTP, because we update the ntp servers in --post
+# fixed broken if statement for removing open-vm-tools on Ubuntu
 
 # keep track of versions.
-VER="1.3a"
+VER="1.3b"
 
 # 0 = false, 1 = true 
 # if true, this will skip some steps.
 DEBUG=1
+
+# 0 = false, 1 = true
+# whether or not to install vmware tools.
+TOOLS=0
+
  
 # file to store all pre-migration values in.
 MFILE="/home/fhadmin/migrate.txt"
@@ -70,6 +78,7 @@ fi
 		#
 		# verify that VMware Tools ISO is available
 		# to mount, then copy and extract the archive.
+
 		echo "Mounting VMware Tools ISO.."
 
 			mount /dev/sr0 /media
@@ -88,7 +97,8 @@ fi
 					#
 					# add check here for Ubuntu, if found open-vm-tools package, remove it.
 					if [ -f /etc/debian_version ]
-					apt-get remove -y open-vm-tools
+					then
+						apt-get remove -y open-vm-tools
 					fi
 					# end check
 					# if open-vm-tools were installe,d the default would be NOT to
@@ -100,7 +110,7 @@ fi
 			else
 				echo "VMware Tools not found in /media - exiting!"
 			exit 0
-fi
+		fi
 	
 		#
 		# check for Linux Distro, and create armor-vmware-tools init script.
@@ -275,7 +285,8 @@ CheckProcs ()
 # as the new ntp servers are not accessible in gen3.
 # we replace the legacy servers, run ntpdate to update time,
 # and then restart the service.
-
+#
+# this only works if the servers has one of our legacy NTP servers listed below.
 FixNTP ()
 	{
 	echo $'\n\n'Updating NTP servers:;
