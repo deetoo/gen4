@@ -29,8 +29,13 @@
 # added DoUpdate checks running script version vs latest available in repo.
 # option to directly download the latest script from the repo using --ver
 #
+# 1.5a - 27 Sept 2017
+# added pre/post comparison of any iptables rules.
+# migration oftentimes flips network interfaces which can break rules
+# created in Gen3 that use NIC-specific rules.
+# 
 # keep track of versions.
-VER="1.4a"
+VER="1.5a"
 
 # 0 = false, 1 = true 
 # if true, this will skip some steps.
@@ -183,6 +188,8 @@ fi
 find /etc/{apt,yum,yum.repos.d} -type f -not -iname "*.bak*" -print -exec sed -i.bak.$RANDOM -e "s/[A-Za-z][A-Za-z][A-Za-z]01-pkg01\.firehost\.net/a.svc.armor.com/g" {} \;
 
 		# save lots of data.
+
+iptables -L >/home/fhadmin/iptables.txt
 
 echo "-- VMWARE TOOLS VERSION" >$MFILE
 vmware-toolbox-cmd -v >>$MFILE
@@ -339,7 +346,14 @@ FixNTP ()
 	}
 
 
-
+# check iptables rules before/afer migration.
+DoIPtables ()
+	{
+		echo $'\n\n'Pre-migration iptables:;
+		cat /home/fhadmin/iptables.txt
+	        echo $'\n\n'Pre-migration outbound connectivity:;	
+		iptables -L
+	}
 # monster function that checks server status after migration.
 PostMigration ()
 	{
@@ -364,6 +378,8 @@ PostMigration ()
 		CheckBomgar
 
 		CheckTrend
+
+		DoIPtables
 
 		FixNTP
 
