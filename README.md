@@ -1,4 +1,5 @@
 # gen4 scripts
+*work on this project has ended.*
 
 Script now does pre-migration checks, and post-migration verification.
 
